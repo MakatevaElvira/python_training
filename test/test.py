@@ -2,7 +2,7 @@ import unittest
 
 from selenium import webdriver
 
-from contact import Contact
+from model.contact import Contact
 
 
 class TestAddContact(unittest.TestCase):
