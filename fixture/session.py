@@ -1,3 +1,4 @@
+from fixture.navigation import NavigationHelper
 
 
 class SessionHelper:
@@ -8,7 +9,7 @@ class SessionHelper:
     def login(self, username, password):
         # login
         wd = self.app.wd
-        self.app.open_home_page()
+        self.app.navigation.open_home_page()
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(username)
