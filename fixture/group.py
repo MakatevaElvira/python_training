@@ -26,8 +26,8 @@ class GroupHelper:
 
     def create(self, group):
         wd = self.app.wd
-        self.app.navigation.open_group_page(wd)
-        self.init_group_creation(wd)
-        self.fill_group_form(wd, group)
-        self.app.submit(wd)
-        self.return_group_page(wd)
+        self.app.navigation.open_group_page()
+        self.init_group_creation()
+        self.fill_group_form(group)
+        self.app.submit()
+        self.return_group_page()

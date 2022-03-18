@@ -24,7 +24,7 @@ class ContactHelper:
     #@staticmethod
     def create(self, contact):
         wd = self.app.wd
-        self.init_contact_creation(wd)
-        self.fill_contact_form(wd, contact)
-        self.app.submit(wd)
+        self.init_contact_creation()
+        self.fill_contact_form(contact)
+        self.app.submit()
         self.return_home()
