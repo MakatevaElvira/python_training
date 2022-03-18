@@ -20,6 +20,14 @@ class Application:
         wd = self.wd
         wd.find_element_by_name("submit").click()
 
+    def update(self):
+        wd = self.wd
+        wd.find_element_by_name("update").click()
+
+    def delete(self):
+        wd = self.wd
+        wd.find_element_by_xpath("//*[@value='Delete']").click()
+
     def is_element_present(self, how, what):
         try:
             self.wd.find_element(by=how, value=what)

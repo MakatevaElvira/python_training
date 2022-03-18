@@ -7,6 +7,14 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_link_text("add new").click()
 
+    def init_first_contact_edition(self):
+        wd = self.app.wd
+        wd.find_element_by_xpath("//*[@title='Edit']").click()
+
+    def select_first_contact(self):
+        wd = self.app.wd
+        wd.find_element_by_name("selected[]").click()
+
     def fill_contact_form(self, contact):
         wd = self.app.wd
         wd.find_element_by_name("firstname").click()
@@ -23,8 +31,20 @@ class ContactHelper:
 
     #@staticmethod
     def create(self, contact):
-        wd = self.app.wd
         self.init_contact_creation()
         self.fill_contact_form(contact)
         self.app.submit()
         self.return_home()
+
+    def edit_first(self, contact):
+        self.select_first_contact()
+        self.init_first_contact_edition()
+        self.fill_contact_form(contact)
+        self.app.update()
+        self.return_home()
+
+    def delete_first(self):
+        self.select_first_contact()
+        self.init_first_contact_edition()
+        self.app.delete()
+        self.app.navigation.home()

@@ -12,3 +12,8 @@ class NavigationHelper:
         # open home page
         wd = self.app.wd
         wd.get("http://localhost/addressbook/index.php")
+
+    def home(self):
+        # open home page
+        wd = self.app.wd
+        wd.find_element_by_link_text("home").click()
