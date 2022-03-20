@@ -28,6 +28,20 @@ class Application:
         wd = self.wd
         wd.find_element_by_xpath("//*[@value='Delete']").click()
 
+    def fill_field(self, field_name, text):
+        wd = self.wd
+        if text is not None:
+            wd.find_element_by_name(field_name).click()
+            wd.find_element_by_name(field_name).clear()
+            wd.find_element_by_name(field_name).send_keys(text)
+
+    def is_valid(self):
+        try:
+            self.wd.current_url
+            return True
+        except:
+            return False
+
     def is_element_present(self, how, what):
         try:
             self.wd.find_element(by=how, value=what)

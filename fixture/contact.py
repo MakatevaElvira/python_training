@@ -21,13 +21,11 @@ class ContactHelper:
 
     def fill_contact_form(self, contact):
         wd = self.app.wd
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(contact.name)
-        wd.find_element_by_name("middlename").send_keys(contact.middle_name)
-        wd.find_element_by_name("company").send_keys(contact.company)
-        wd.find_element_by_name("home").send_keys(contact.home_phone)
-        wd.find_element_by_name("email").send_keys(contact.email)
+        self.app.fill_field("firstname",contact.name)
+        self.app.fill_field("middlename", contact.middle_name)
+        self.app.fill_field("company", contact.company)
+        self.app.fill_field("home", contact.home_phone)
+        self.app.fill_field("email", contact.email)
 
     def return_home(self):
         wd = self.app.wd
