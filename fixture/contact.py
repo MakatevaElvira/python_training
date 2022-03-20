@@ -7,6 +7,10 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_link_text("add new").click()
 
+    def open_contact_page(self):
+        wd = self.app.wd
+        self.app.home()
+
     def init_first_contact_edition(self):
         wd = self.app.wd
         wd.find_element_by_xpath("//*[@title='Edit']").click()
@@ -37,6 +41,7 @@ class ContactHelper:
         self.return_home()
 
     def edit_first(self, contact):
+        self.open_contact_page()
         self.select_first_contact()
         self.init_first_contact_edition()
         self.fill_contact_form(contact)
@@ -44,6 +49,7 @@ class ContactHelper:
         self.return_home()
 
     def delete_first(self):
+        self.open_contact_page()
         self.select_first_contact()
         self.init_first_contact_edition()
         self.app.delete()
