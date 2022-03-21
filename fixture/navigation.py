@@ -5,8 +5,8 @@ class NavigationHelper:
 
     def open_group_page(self):
         wd = self.app.wd
-        # wd.find_element_by_xpath("//a[.='groups']").click()
-        wd.find_element_by_link_text("groups").click()
+        if not (wd.current_url.endswith("group.php") and len(wd.find_elements_by_name("new")) > 0):
+            wd.find_element_by_link_text("groups").click()
 
     def open_home_page(self):
         # open home page
@@ -16,4 +16,6 @@ class NavigationHelper:
     def home(self):
         # open home page
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        if not (wd.current_url.endswith("index.php") and len(
+                wd.find_elements_by_xpath("//input[@value='Send e-Mail']")) > 0):
+            wd.find_element_by_link_text("home").click()
