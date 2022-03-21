@@ -9,7 +9,7 @@ class ContactHelper:
 
     def open_contact_page(self):
         wd = self.app.wd
-        self.app.home()
+        self.app.navigation.home()
 
     def init_first_contact_edition(self):
         wd = self.app.wd
@@ -52,3 +52,8 @@ class ContactHelper:
         self.init_first_contact_edition()
         self.app.delete()
         self.app.navigation.home()
+
+    def count(self):
+        wd = self.app.wd
+        self.open_contact_page()
+        return len(wd.find_elements_by_name("selected[]"))
