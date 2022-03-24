@@ -26,6 +26,7 @@ class ContactHelper:
         wd = self.app.wd
         self.app.fill_field("firstname",contact.name)
         self.app.fill_field("middlename", contact.middle_name)
+        self.app.fill_field("lastname", contact.last_name)
         self.app.fill_field("company", contact.company)
         self.app.fill_field("home", contact.home_phone)
         self.app.fill_field("email", contact.email)
@@ -67,6 +68,7 @@ class ContactHelper:
         contacts = []
         for element in wd.find_elements_by_xpath("//tr[@name='entry']"):
             text = element.find_element_by_xpath("//td[3]").text
+            tex2 = element.find_element_by_xpath("//td[2]").text
             id = element.find_element_by_name("selected[]").get_attribute("value")
-            contacts.append(Contact(name=text,id = id))
+            contacts.append(Contact(name=text, last_name = tex2, id = id))
         return contacts
