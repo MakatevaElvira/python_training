@@ -12,7 +12,6 @@ class GroupHelper:
         self.app.fill_field("group_header", group.header)
         self.app.fill_field("group_footer", group.footer)
 
-
     def fill_group_name(self, group):
         wd = self.app.wd
         wd.find_element_by_name("group_name").click()
@@ -34,6 +33,7 @@ class GroupHelper:
         self.fill_group_form(group)
         self.app.submit()
         self.return_group_page()
+        self.group_cash = None
 
     def select_first(self):
         wd = self.app.wd
@@ -47,12 +47,12 @@ class GroupHelper:
         wd = self.app.wd
         wd.find_element_by_name("edit").click()
 
-
     def delete_first(self):
         self.app.navigation.open_group_page()
         self.select_first()
         self.submit_deletion()
         self.return_group_page()
+        self.group_cash = None
 
     def edit_first(self, group):
         self.app.navigation.open_group_page()
@@ -61,18 +61,23 @@ class GroupHelper:
         self.fill_group_form(group)
         self.app.update()
         self.return_group_page()
+        self.group_cash = None
 
     def count(self):
         wd = self.app.wd
         self.app.navigation.open_group_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    """кеширование трудоемкой операции"""
+    group_cash = None
+
     def get_group_list(self):
-        wd = self.app.wd
-        self.app.navigation.open_group_page()
-        groups = []
-        for element in wd.find_elements_by_css_selector("span.group"):
-            text = element.text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            groups.append(Group(name=text,id = id))
-        return groups
+        if self.group_cash is None:
+            wd = self.app.wd
+            self.app.navigation.open_group_page()
+            self.group_cash = []
+            for element in wd.find_elements_by_css_selector("span.group"):
+                text = element.text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.group_cash.append(Group(name=text, id=id))
+        return list(self.group_cash)
