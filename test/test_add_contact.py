@@ -6,7 +6,7 @@ from model.contact import Contact
 def test_add_contact(app):
     old_contacts = app.contact.get_contact_list()
     added_contact = Contact(
-        name="Elvira",
+        name="Elvirochka",
         middle_name="Heder1",
         last_name ="Familia",
         company="Footer1",
