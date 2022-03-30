@@ -26,7 +26,7 @@ def test_edit_some_contact(app):
     if app.contact.count() == 0:
         app.contact.create(Contact(name="Precondition name"))
     edited_contact = Contact(
-        name="Elvira Edited",
+        name="Elvira Edite25",
         middle_name="middle_name edited",
         last_name= "famil",
         company="company Edited",

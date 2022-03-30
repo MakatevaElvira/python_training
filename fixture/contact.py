@@ -15,8 +15,11 @@ class ContactHelper:
         self.app.navigation.home()
 
     def init_first_contact_edition(self):
+        self.init_contact_edition_by_index(0)
+
+    def init_contact_edition_by_index(self, index):
         wd = self.app.wd
-        wd.find_element_by_xpath("//*[@title='Edit']").click()
+        wd.find_elements_by_xpath("//*[@title='Edit']")[index].click()
 
     def select_first_contact(self):
         wd = self.app.wd
@@ -27,7 +30,6 @@ class ContactHelper:
         wd.find_elements_by_name("selected[]")[index].click()
 
     def fill_contact_form(self, contact):
-        wd = self.app.wd
         self.app.fill_field("firstname", contact.name)
         self.app.fill_field("middlename", contact.middle_name)
         self.app.fill_field("lastname", contact.last_name)
@@ -52,8 +54,7 @@ class ContactHelper:
 
     def edit_by_index(self, contact, index):
         self.open_contact_page()
-        self.select_contact_by_index(index)
-        self.init_first_contact_edition()
+        self.init_contact_edition_by_index(index)
         self.fill_contact_form(contact)
         self.app.update()
         self.return_home()
@@ -64,8 +65,7 @@ class ContactHelper:
 
     def delete_by_index(self, index):
         self.open_contact_page()
-        self.select_contact_by_index(index)
-        self.init_first_contact_edition()
+        self.init_contact_edition_by_index(index)
         self.app.delete()
         self.app.navigation.home()
         self.contact_cash = None
