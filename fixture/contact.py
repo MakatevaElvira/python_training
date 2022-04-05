@@ -1,3 +1,5 @@
+import re
+
 from model.contact import Contact
 
 
@@ -20,6 +22,10 @@ class ContactHelper:
     def init_contact_edition_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_xpath("//*[@title='Edit']")[index].click()
+
+    def open_contact_view_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_xpath("//tr[@name='entry']/td[7]")[index].click()
 
     def select_first_contact(self):
         wd = self.app.wd
@@ -87,5 +93,59 @@ class ContactHelper:
                 text = element.find_element_by_xpath("./td[3]").text
                 tex2 = element.find_element_by_xpath("./td[2]").text
                 id = element.find_element_by_name("selected[]").get_attribute("value")
-                self.contact_cash.append(Contact(name=text, last_name=tex2, id=id))
+                all_phones = element.find_element_by_xpath("./td[6]").text.splitlines()
+                print("second!!!= " + all_phones[1])
+                self.contact_cash.append(Contact(name=text, last_name=tex2, id=id,
+                                                 home_phone=all_phones[0],
+                                                 mobile_phone=all_phones[1],
+                                                 work_phone=all_phones[2]))
         return list(self.contact_cash)
+
+    def get_contact_list_with_allPhones(self):
+        if self.contact_cash is None:
+            wd = self.app.wd
+            self.open_contact_page()
+            self.contact_cash = []
+            for element in wd.find_elements_by_xpath("//tr[@name='entry']"):
+                text = element.find_element_by_xpath("./td[3]").text
+                tex2 = element.find_element_by_xpath("./td[2]").text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                all_phones = element.find_element_by_xpath("./td[6]").text
+                print("second!!!= " + all_phones[1])
+                self.contact_cash.append(Contact(name=text, last_name=tex2, id=id,
+                                                 all_phones=all_phones))
+        return list(self.contact_cash)
+
+    def get_contact_info_from_edit_page(self, index):
+        wd = self.app.wd
+        self.open_contact_page()
+        self.init_contact_edition_by_index( index)
+        name = wd.find_element_by_name("firstname").get_attribute("value")
+        last_name = wd.find_element_by_name("lastname").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
+        home = wd.find_element_by_name("home").get_attribute("value")
+        mobile = wd.find_element_by_name("mobile").get_attribute("value")
+        work = wd.find_element_by_name("work").get_attribute("value")
+        return (Contact(name=name, last_name=last_name, id=id, home_phone=home,
+                        mobile_phone=mobile, work_phone=work))
+
+    def get_contact_from_view_page(self, index):
+        wd = self.app.wd
+        self.open_contact_page()
+        self.open_contact_view_by_index(index)
+        text = wd.find_element_by_id("content").text
+        home_phone = re.search("H: (.*)", text)
+        if home_phone != None:
+            print(home_phone.group(1))
+        else:
+            print('None!')
+        home_phone = re.search("H: (.*)", text).group(1)
+        mobile_phone = re.search("M: (.*)", text).group(1)
+        work_phone = re.search("W: (.*)", text).group(1)
+        return (Contact( home_phone=home_phone,
+                         mobile_phone=mobile_phone,
+                         work_phone=work_phone))
+
+
+
+
