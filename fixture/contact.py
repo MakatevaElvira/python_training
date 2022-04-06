@@ -101,6 +101,12 @@ class ContactHelper:
                                                  work_phone=all_phones[2]))
         return list(self.contact_cash)
 
+    def get_contact_list_size(self):
+            wd = self.app.wd
+            self.open_contact_page()
+            elements = wd.find_elements_by_xpath("//tr[@name='entry']")
+            return len(elements)
+
     def get_contact_list_with_allPhones(self):
         if self.contact_cash is None:
             wd = self.app.wd
@@ -116,6 +122,24 @@ class ContactHelper:
                                                  all_phones=all_phones))
         return list(self.contact_cash)
 
+    def get_contact_list_full(self):
+        if self.contact_cash is None:
+            wd = self.app.wd
+            self.open_contact_page()
+            self.contact_cash = []
+            for element in wd.find_elements_by_xpath("//tr[@name='entry']"):
+                name = element.find_element_by_xpath("./td[3]").text
+                last_name = element.find_element_by_xpath("./td[2]").text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                address = element.find_element_by_xpath("./td[4]").text
+                all_emails = element.find_element_by_xpath("./td[5]").text
+                all_phones = element.find_element_by_xpath("./td[6]").text
+                print("second!!!= " + all_phones[1])
+                self.contact_cash.append(Contact(name=name, last_name=last_name, id=id,
+                                                 address=address, all_emails=all_emails,
+                                                 all_phones=all_phones))
+        return list(self.contact_cash)
+
     def get_contact_info_from_edit_page(self, index):
         wd = self.app.wd
         self.open_contact_page()
@@ -128,6 +152,25 @@ class ContactHelper:
         work = wd.find_element_by_name("work").get_attribute("value")
         return (Contact(name=name, last_name=last_name, id=id, home_phone=home,
                         mobile_phone=mobile, work_phone=work))
+
+    def get_contact_info_from_edit_page_full(self, index):
+        wd = self.app.wd
+        self.open_contact_page()
+        self.init_contact_edition_by_index( index)
+        name = wd.find_element_by_name("firstname").get_attribute("value")
+        last_name = wd.find_element_by_name("lastname").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
+        home = wd.find_element_by_name("home").get_attribute("value")
+        mobile = wd.find_element_by_name("mobile").get_attribute("value")
+        work = wd.find_element_by_name("work").get_attribute("value")
+        e_mail = wd.find_element_by_name("email").get_attribute("value")
+        e_mail2 = wd.find_element_by_name("email2").get_attribute("value")
+        e_mail3 = wd.find_element_by_name("email3").get_attribute("value")
+        return (Contact(name=name, last_name=last_name, id=id,address=address,
+                        home_phone=home,mobile_phone=mobile, work_phone=work,
+                        email=e_mail,email2=e_mail2,email3=e_mail3))
+
 
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
@@ -145,6 +188,23 @@ class ContactHelper:
         return (Contact( home_phone=home_phone,
                          mobile_phone=mobile_phone,
                          work_phone=work_phone))
+
+    def clear(self, string):
+        return re.sub("[() -]", "", string)
+
+    # работа с данными в функциональном стиле= СКЛЕЙКА
+    def merge_phones_like_on_homePage(self, contact):
+        return "\n".join(filter(lambda x: x != "",
+                                map(lambda x: self.clear(x),
+                                    filter(lambda x: x is not None,
+                                           (contact.home_phone, contact.mobile_phone, contact.work_phone)))))
+
+    # работа с данными в функциональном стиле= СКЛЕЙКА
+    def merge_emails_like_on_homePage(self, contact):
+        return "\n".join(filter(lambda x: x != "",
+                                map(lambda x: self.clear(x),
+                                    filter(lambda x: x is not None,
+                                           (contact.email, contact.email2, contact.email3)))))
 
 
 
