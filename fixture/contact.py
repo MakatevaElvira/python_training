@@ -202,9 +202,8 @@ class ContactHelper:
     # работа с данными в функциональном стиле= СКЛЕЙКА
     def merge_emails_like_on_homePage(self, contact):
         return "\n".join(filter(lambda x: x != "",
-                                map(lambda x: self.clear(x),
                                     filter(lambda x: x is not None,
-                                           (contact.email, contact.email2, contact.email3)))))
+                                           (contact.email, contact.email2, contact.email3))))
 
 
 
